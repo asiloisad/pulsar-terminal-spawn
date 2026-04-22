@@ -12,6 +12,7 @@
         submenu: [
           { label: 'Spawn Terminal Here', command: 'terminal-spawn:open' }
           { label: 'Spawn Terminal at Project Root', command: 'terminal-spawn:root' }
+          { label: 'Select Preset...', command: 'terminal-spawn:list' }
         ]
       }
     ]

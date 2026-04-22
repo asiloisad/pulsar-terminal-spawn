@@ -10,6 +10,7 @@ Fork of [open-terminal-here](https://github.com/blueimp/atom-open-terminal-here)
 - **Spawn at project root**: Launch the terminal in the project root directory.
 - **Configurable command**: Customize the shell command used on each platform.
 - **Spawn with command**: Launch the terminal with a command pre-executed inside it (via the provided service).
+- **Preset list**: Pick from a list of per-platform terminal presets to populate the settings.
 
 ## Installation
 
@@ -19,19 +20,33 @@ To install `terminal-spawn` search for [terminal-spawn](https://web.pulsar-edit.
 
 Commands available in `atom-workspace`:
 
-- `terminal-spawn:open`: spawn the terminal in the selected or active file's directory (default <kbd>Shift+`</kbd>).
-- `terminal-spawn:root`: spawn the terminal in the project root directory (default <kbd>Alt+`</kbd>).
+- `terminal-spawn:open`: <kbd>Shift+`</kbd> spawn the terminal in the selected or active file's directory,
+- `terminal-spawn:root`: <kbd>Alt+`</kbd> spawn the terminal in the project root directory,
+- `terminal-spawn:list`: open a list of terminal presets and apply the chosen one to the settings.
 
 ## Configuration
 
-- **Terminal command**: shell command used to spawn the terminal. Defaults depend on platform:
-  - macOS: `open -a Terminal.app "$PWD"`,
-  - Windows: `start /D "%cd%" cmd`,
-  - Linux: `x-terminal-emulator`.
-- **Terminal command with arguments**: template used when spawning the terminal with a command (via the service `open(dirpath, command)` call). Supports `{cwd}` and `{command}` placeholders. Defaults depend on platform:
-  - macOS: `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'`,
-  - Windows: `start /D "{cwd}" cmd /K "{command}"`,
-  - Linux: `x-terminal-emulator -e bash -c 'cd "{cwd}"; {command}; exec bash'`.
+Two settings control how the terminal is launched:
+
+- **Terminal command**: shell command used by the spawn commands.
+- **Terminal command with arguments**: template used when a service caller passes a `command`. Supports `{cwd}` and `{command}` placeholders.
+
+Pick a row matching your terminal of choice. Use `terminal-spawn:list` to apply one directly, or copy the snippets into the two settings above. Defaults for each platform are marked `(default)`.
+
+| Platform | Terminal | Command | Command with arguments |
+|---|---|---|---|
+| Windows | Command Prompt (default) | `start /D "%cd%" cmd` | `start /D "{cwd}" cmd /K "{command}"` |
+| Windows | Windows PowerShell | `start /D "%cd%" powershell` | `start /D "{cwd}" powershell -NoExit -Command "{command}"` |
+| Windows | PowerShell 7 | `start /D "%cd%" pwsh` | `start /D "{cwd}" pwsh -NoExit -Command "{command}"` |
+| Windows | Windows Terminal (new window) | `wt -d "%cd%"` | `wt -d "{cwd}" cmd /K "{command}"` |
+| Windows | Windows Terminal (new tab) | `wt -w 0 nt -d "%cd%"` | `wt -w 0 nt -d "{cwd}" cmd /K "{command}"` |
+| macOS | Terminal.app (default) | `open -a Terminal.app "$PWD"` | `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'` |
+| macOS | iTerm2 | `open -a iTerm "$PWD"` | `osascript -e 'tell app "iTerm" to create window with default profile command "bash -c \"cd {cwd}; {command}; exec bash\""'` |
+| Linux | Default emulator (default) | `x-terminal-emulator` | `x-terminal-emulator -e bash -c 'cd "{cwd}"; {command}; exec bash'` |
+| Linux | GNOME Terminal | `gnome-terminal --tab --working-directory="$PWD"` | `gnome-terminal --working-directory="{cwd}" -- bash -c '{command}; exec bash'` |
+| Linux | Konsole | `konsole --new-tab --workdir "$PWD"` | `konsole --workdir "{cwd}" -e bash -c '{command}; exec bash'` |
+| Linux | WezTerm | `wezterm start --cwd "$PWD"` | `wezterm start --cwd "{cwd}" -- bash -c '{command}; exec bash'` |
+| Linux | Kitty | `kitty @ launch --type tab --cwd "$PWD"` | `kitty @ launch --type tab --cwd "{cwd}" bash -c '{command}; exec bash'` |
 
 ## Provided Service `terminal-spawn`
 
@@ -63,24 +78,6 @@ module.exports = {
 ```
 
 - `open(dirpath, command?)`: spawns the user-configured terminal at `dirpath`. If `command` is provided, the terminal opens with that command pre-executed inside it (using the `Terminal command with arguments` template). If `dirpath` is falsy, falls back to the active project root. If `dirpath` points to a file, uses its parent directory.
-
-## Examples
-
-Pick a row matching your terminal of choice and copy the example snippets into `Terminal command` and `Terminal command with arguments` in the package settings. The first is used by the spawn commands, the second by service callers passing a `command`.
-
-| Platform | Terminal | Command | Command with arguments |
-|---|---|---|---|
-| Windows | Command Prompt | `start /D "%cd%" cmd` | `start /D "{cwd}" cmd /K "{command}"` |
-| Windows | PowerShell | `start /D "%cd%" pwsh` | `start /D "{cwd}" pwsh -NoExit -Command "{command}"` |
-| Windows | Windows Terminal (new window) | `wt -d "%cd%"` | `wt -d "{cwd}" cmd /K "{command}"` |
-| Windows | Windows Terminal (new tab) | `wt -w 0 nt -d "%cd%"` | `wt -w 0 nt -d "{cwd}" cmd /K "{command}"` |
-| macOS | Terminal.app | `open -a Terminal.app "$PWD"` | `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'` |
-| macOS | iTerm2 | `open -a iTerm "$PWD"` | `osascript -e 'tell app "iTerm" to create window with default profile command "bash -c \"cd {cwd}; {command}; exec bash\""'` |
-| Linux | Default emulator | `x-terminal-emulator` | `x-terminal-emulator -e bash -c 'cd "{cwd}"; {command}; exec bash'` |
-| Linux | GNOME Terminal | `gnome-terminal --tab --working-directory="$PWD"` | `gnome-terminal --working-directory="{cwd}" -- bash -c '{command}; exec bash'` |
-| Linux | Konsole | `konsole --new-tab --workdir "$PWD"` | `konsole --workdir "{cwd}" -e bash -c '{command}; exec bash'` |
-| Linux | WezTerm | `wezterm start --cwd "$PWD"` | `wezterm start --cwd "{cwd}" -- bash -c '{command}; exec bash'` |
-| Linux | Kitty | `kitty @ launch --type tab --cwd "$PWD"` | `kitty @ launch --type tab --cwd "{cwd}" bash -c '{command}; exec bash'` |
 
 ## Contributing
 

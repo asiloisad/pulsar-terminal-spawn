@@ -23,5 +23,8 @@
         "1.0.0": "provideTerminalSpawnService"
       }
     }
+  },
+  "dependencies": {
+    "@asiloisad/select-list": "^1.5.1"
   }
 }
