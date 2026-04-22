@@ -20,8 +20,8 @@ To install `terminal-spawn` search for [terminal-spawn](https://web.pulsar-edit.
 
 Commands available in `atom-workspace`:
 
-- `terminal-spawn:open`: <kbd>Shift+`</kbd> spawn the terminal in the selected or active file's directory,
 - `terminal-spawn:root`: <kbd>Alt+`</kbd> spawn the terminal in the project root directory,
+- `terminal-spawn:open`: spawn the terminal in the selected or active file's directory,
 - `terminal-spawn:list`: open a list of terminal presets and apply the chosen one to the settings.
 
 ## Configuration
@@ -36,8 +36,8 @@ Pick a row matching your terminal of choice. Use `terminal-spawn:list` to apply 
 | Platform | Terminal | Command | Command with arguments |
 |---|---|---|---|
 | Windows | Command Prompt (default) | `start /D "%cd%" cmd` | `start /D "{cwd}" cmd /K "{command}"` |
-| Windows | Windows PowerShell | `start /D "%cd%" powershell` | `start /D "{cwd}" powershell -NoExit -Command "{command}"` |
-| Windows | PowerShell 7 | `start /D "%cd%" pwsh` | `start /D "{cwd}" pwsh -NoExit -Command "{command}"` |
+| Windows | Windows PowerShell | `start powershell -NoExit -Command "Set-Location -LiteralPath '%cd%'"` | `start powershell -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
+| Windows | PowerShell 7 | `start pwsh -NoExit -Command "Set-Location -LiteralPath '%cd%'"` | `start pwsh -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
 | Windows | Windows Terminal (new window) | `wt -d "%cd%"` | `wt -d "{cwd}" cmd /K "{command}"` |
 | Windows | Windows Terminal (new tab) | `wt -w 0 nt -d "%cd%"` | `wt -w 0 nt -d "{cwd}" cmd /K "{command}"` |
 | macOS | Terminal.app (default) | `open -a Terminal.app "$PWD"` | `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'` |
