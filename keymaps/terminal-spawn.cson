@@ -1,0 +1,3 @@
+'atom-workspace':
+  'alt-`': 'terminal-spawn:root'
+  'shift-`': 'terminal-spawn:open'

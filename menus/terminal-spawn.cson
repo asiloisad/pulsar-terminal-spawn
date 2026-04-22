@@ -1,0 +1,19 @@
+'context-menu':
+  'atom-text-editor, .tree-view .file, .tree-view .directory': [
+    { label: 'Spawn Terminal Here', command: 'terminal-spawn:open' }
+  ]
+
+'menu': [
+  {
+    label: 'Packages'
+    submenu: [
+      {
+        label: 'Terminal Spawn'
+        submenu: [
+          { label: 'Spawn Terminal Here', command: 'terminal-spawn:open' }
+          { label: 'Spawn Terminal at Project Root', command: 'terminal-spawn:root' }
+        ]
+      }
+    ]
+  }
+]
