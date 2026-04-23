@@ -26,27 +26,24 @@ Commands available in `atom-workspace`:
 
 ## Configuration
 
-Two settings control how the terminal is launched:
-
-- **Terminal command**: shell command used by the spawn commands.
-- **Terminal command with arguments**: template used when a service caller passes a `command`. Supports `{cwd}` and `{command}` placeholders.
-
 Pick a row matching your terminal of choice. Use `terminal-spawn:list` to apply one directly, or copy the snippets into the two settings above. Defaults for each platform are marked `(default)`.
 
 | Platform | Terminal | Command | Command with arguments |
 |---|---|---|---|
-| Windows | Command Prompt (default) | `start /D "%cd%" cmd` | `start /D "{cwd}" cmd /K "{command}"` |
-| Windows | Windows PowerShell | `start powershell -NoExit -Command "Set-Location -LiteralPath '%cd%'"` | `start powershell -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
-| Windows | PowerShell 7 | `start pwsh -NoExit -Command "Set-Location -LiteralPath '%cd%'"` | `start pwsh -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
-| Windows | Windows Terminal (new window) | `wt -d "%cd%"` | `wt -d "{cwd}" cmd /K "{command}"` |
-| Windows | Windows Terminal (new tab) | `wt -w 0 nt -d "%cd%"` | `wt -w 0 nt -d "{cwd}" cmd /K "{command}"` |
-| macOS | Terminal.app (default) | `open -a Terminal.app "$PWD"` | `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'` |
-| macOS | iTerm2 | `open -a iTerm "$PWD"` | `osascript -e 'tell app "iTerm" to create window with default profile command "bash -c \"cd {cwd}; {command}; exec bash\""'` |
+| Windows | Command Prompt (default) | `start /D "{cwd}" cmd` | `start /D "{cwd}" cmd /K "{command}"` |
+| Windows | Windows PowerShell | `start powershell -NoExit -Command "Set-Location -LiteralPath '{cwd}'"` | `start powershell -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
+| Windows | PowerShell 7 | `start pwsh -NoExit -Command "Set-Location -LiteralPath '{cwd}'"` | `start pwsh -NoExit -Command "Set-Location -LiteralPath '{cwd}'; {command}"` |
+| Windows | Windows Terminal (new window) | `wt -d "{cwd}"` | `wt -d "{cwd}" cmd /K "{command}"` |
+| Windows | Windows Terminal (new tab) | `wt -w 0 nt -d "{cwd}"` | `wt -w 0 nt -d "{cwd}" cmd /K "{command}"` |
+| macOS | Terminal.app (default) | `open -a Terminal.app "{cwd}"` | `osascript -e 'tell app "Terminal" to do script "cd \"{cwd}\" && {command}"'` |
+| macOS | iTerm2 | `open -a iTerm "{cwd}"` | `osascript -e 'tell app "iTerm" to create window with default profile command "bash -c \"cd {cwd}; {command}; exec bash\""'` |
 | Linux | Default emulator (default) | `x-terminal-emulator` | `x-terminal-emulator -e bash -c 'cd "{cwd}"; {command}; exec bash'` |
-| Linux | GNOME Terminal | `gnome-terminal --tab --working-directory="$PWD"` | `gnome-terminal --working-directory="{cwd}" -- bash -c '{command}; exec bash'` |
-| Linux | Konsole | `konsole --new-tab --workdir "$PWD"` | `konsole --workdir "{cwd}" -e bash -c '{command}; exec bash'` |
-| Linux | WezTerm | `wezterm start --cwd "$PWD"` | `wezterm start --cwd "{cwd}" -- bash -c '{command}; exec bash'` |
-| Linux | Kitty | `kitty @ launch --type tab --cwd "$PWD"` | `kitty @ launch --type tab --cwd "{cwd}" bash -c '{command}; exec bash'` |
+| Linux | GNOME Terminal | `gnome-terminal --tab --working-directory="{cwd}"` | `gnome-terminal --working-directory="{cwd}" -- bash -c '{command}; exec bash'` |
+| Linux | Konsole | `konsole --new-tab --workdir "{cwd}"` | `konsole --workdir "{cwd}" -e bash -c '{command}; exec bash'` |
+| Linux | WezTerm | `wezterm start --cwd "{cwd}"` | `wezterm start --cwd "{cwd}" -- bash -c '{command}; exec bash'` |
+| Linux | Kitty | `kitty @ launch --type tab --cwd "{cwd}"` | `kitty @ launch --type tab --cwd "{cwd}" bash -c '{command}; exec bash'` |
+
+Supports `{cwd}` and `{command}` placeholders.
 
 ## Provided Service `terminal-spawn`
 
