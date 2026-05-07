@@ -1,5 +1,5 @@
 'context-menu':
-  'atom-text-editor, .tree-view .file, .tree-view .directory': [
+  'atom-text-editor, .tree-view .tree-view-root:not(.multi-select) .file, .tree-view .tree-view-root:not(.multi-select) .directory': [
     { label: 'Spawn Terminal Here', command: 'terminal-spawn:open' }
   ]
 
